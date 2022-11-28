@@ -14,6 +14,7 @@ NAME = philosopher
 
 SRCS	= 		srcs/philosopher.c 				\
 				srcs/check_errors.c				\
+				srcs/init.c						\
 				srcs/utils.c					\
 
 OBJS	= ${SRCS:.c=.o}
@@ -33,17 +34,17 @@ all:	${NAME}
 
 ${NAME}:	${OBJS}
 		@${CC} ${CFLAGS} ${OBJS} -o philosopher
-		@printf "%s\e[0;32m pipex : Compiling object file into executable\n\e[0m" "-"
+		@printf "%s\e[0;32m philosopher : Compiling object file into executable\n\e[0m" "-"
 
 clean:
 		@${RM} ${OBJS}
-		@printf "%s\e[0;31m pipex : Delete all object files\n\e[0m" "-"
+		@printf "%s\e[0;31m philosopher : Delete all object files\n\e[0m" "-"
 
 fclean:
 		@${RM} ${OBJS}
-		@printf "%s\e[0;31m pipex : Delete all object files\n\e[0m" "-"
+		@printf "%s\e[0;31m philosopher : Delete all object files\n\e[0m" "-"
 		@${RM} ${NAME}
-		@printf "%s\e[0;31m pipex : Delete executable\n\e[0m" "-"
+		@printf "%s\e[0;31m philosopher : Delete executable\n\e[0m" "-"
 
 re: fclean ${NAME}
 

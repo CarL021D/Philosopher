@@ -5,17 +5,25 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <limits.h>
+# include <pthread.h>
+
+# define FALSE 0
+# define TRUE 1 
+# define ERROR 2 
 
 typedef struct s_data
 {
-    int     nb_of_philos;
-    int     time_to_die;
-    int     time_to_eat;
-    int     time_to_sleep;
-    int     has_died;
-    int     max_nb_of_meals;
+    pthread_t   *philos;
+    int         nb_of_philos;
+    int         time_to_die;
+    int         time_to_eat;
+    int         time_to_sleep;
+    int         has_died;
+    int         max_nb_of_meals;
 }   t_data;
 
+//                  INIT
+int init_struct(t_data *s_data, int ac, char **av);
 
 //                  ERROR HANDLING
 int     exit_if_args_errors(int ac, char **av);
