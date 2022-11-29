@@ -16,6 +16,7 @@ SRCS	= 		srcs/philosopher.c 				\
 				srcs/check_errors.c				\
 				srcs/init.c						\
 				srcs/utils.c					\
+				srcs/free.c					\
 
 OBJS	= ${SRCS:.c=.o}
 

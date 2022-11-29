@@ -22,11 +22,23 @@ typedef struct s_data
     int         max_nb_of_meals;
 }   t_data;
 
+typedef struct s_philo
+{
+    int             left_fork;
+    int             right_fork;
+    int             total_meals_eaten;
+    int             is_dead;
+    struct s_philo  *next;
+}   t_philo;
+
 //                  INIT
-int init_struct(t_data *s_data, int ac, char **av);
+int    init_data(t_data *data, t_philo **philo, int ac, char **av);
 
 //                  ERROR HANDLING
-int     exit_if_args_errors(int ac, char **av);
+int exit_if_args_errors(int ac, char **av);
+
+//                  FREE
+void	free_list(t_philo **philo);
 
 //                  UTILS
 int	ft_atoi(const char *nptr);
