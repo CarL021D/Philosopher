@@ -43,6 +43,7 @@ static void     init_list(t_data *data, t_philo **philo)
     i = 0;
     while (i < data->nb_of_philos)
     {
+        node->index = i;
         node->left_fork = TRUE;
         node->right_fork = FALSE;
         node->total_meals_eaten = 0;

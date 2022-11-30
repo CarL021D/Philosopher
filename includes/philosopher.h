@@ -9,7 +9,10 @@
 
 # define FALSE 0
 # define TRUE 1 
-# define ERROR 2 
+# define ERROR 2
+# define EATING 100
+# define SLEEPING 101
+# define THINKING 102
 
 typedef struct s_data
 {
@@ -18,14 +21,18 @@ typedef struct s_data
     int         time_to_die;
     int         time_to_eat;
     int         time_to_sleep;
-    int         has_died;
+    int         philo_has_died;
     int         max_nb_of_meals;
 }   t_data;
 
 typedef struct s_philo
 {
+    int             index;
     int             left_fork;
     int             right_fork;
+    int             philo_is_eating;
+    int             philo_is_sleeping;
+    int             philo_is_thinking;
     int             total_meals_eaten;
     int             is_dead;
     struct s_philo  *next;
