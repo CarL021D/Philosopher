@@ -11,7 +11,7 @@ t_philo	*create_node(void)
 	return (node);
 }
 
-static int  create_list(t_data *data, t_philo **lst_philo)
+static int  create_list(t_data *data, t_philo **philo_lst)
 {
 	t_philo		*philo;
 	int			i;
@@ -20,10 +20,10 @@ static int  create_list(t_data *data, t_philo **lst_philo)
 	philo = create_node();
 	if (!philo)
 		return (ERROR);
-	*lst_philo = philo;
+	*philo_lst = philo;
 	while (i < data->nb_of_philos)
 	{
-		philo = *lst_philo;
+		philo = *philo_lst;
 		while (philo->next)
 			philo = philo->next;
 		philo->next = create_node();
@@ -31,20 +31,22 @@ static int  create_list(t_data *data, t_philo **lst_philo)
 			return (ERROR);
 		i++;
 	}
-	// if (data->nb_of_philos > 1)
-	// {
-	// 	philo = philo->next;
-	// 	philo->next = *lst_philo;
-	// }
 	return (1);
 }
 
-static void     init_t_philo(t_data *data, t_philo **lst_philo)
+// void	init_mutex(t_philo **philo_lst, t_data *data)
+// {
+// 	int		i;
+
+// 	pthread_mutex_init(data->)
+// }
+
+static void     init_philo_thread(t_philo **philo_lst, t_data *data)
 {
 	t_philo     *philo;
 	int         i;
 
-	philo = (*lst_philo);
+	philo = (*philo_lst);
 	i = 1;
 	while (i <= data->nb_of_philos)
 	{
@@ -55,7 +57,7 @@ static void     init_t_philo(t_data *data, t_philo **lst_philo)
 		philo->total_meals_eaten = 0;
 		philo->data = data;
 		if (data->nb_of_philos > 1 && i == data->nb_of_philos)
-			philo->next = *lst_philo;
+			philo->next = *philo_lst;
 		else
 			philo = philo->next;
 		i++;
@@ -68,26 +70,32 @@ static int  init_struct(t_data *data, int ac, char **av)
 	data->time_to_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
+	data->philo_has_died = FALSE;
+	data->max_meal_option = FALSE;
 	if (ac == 6)
+	{
 		data->max_nb_of_meals = ft_atoi(av[5]);
+		data->max_meal_option = TRUE;
+		data->every_philo_full = FALSE;
+	}
 	data->philos = malloc(sizeof(pthread_t) * data->nb_of_philos);
 	if (!data->philos)
 		return (ERROR);
 	return (1);
 }
 
-int    init_data(t_data *data, t_philo **lst_philo, int ac, char **av)
+int    init_data(t_philo **philo_lst, t_data *data, int ac, char **av)
 {
 	if (init_struct(data, ac, av) == ERROR)
 		return (ERROR);
-	create_list(data, lst_philo);	
-	if (create_list(data, lst_philo) == ERROR)
+	create_list(data, philo_lst);	
+	if (create_list(data, philo_lst) == ERROR)
 	{
 		free(data->philos);
-		free_list(lst_philo);
+		free_list(philo_lst);
 		return (ERROR);
 	}
-
-	init_t_philo(data, lst_philo);
+	init_philo_thread(philo_lst, data);
+	// init_mutex(philo_lst, data);
 	return (1);
 }

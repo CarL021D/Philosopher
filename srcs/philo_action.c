@@ -13,18 +13,7 @@ void	mutex_print(t_philo *philo, char *message)
 	pthread_mutex_unlock(&philo->data->lock_print);
 }
 
-int		philo_died(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->philo_has_died_mutex);
-	if (get_current_time() - philo->last_meal_time > philo->data->time_to_die)
-	{
-		philo->data->philo_has_died = TRUE;
-		mutex_print(philo, "died\n");
-
-	}
-	pthread_mutex_unlock(&philo->data->philo_has_died_mutex);
-
-}
+// TODO: - Check condition for max meal reached for an individual philo 
 
 void    philo_is_eating(t_philo *philo)
 {

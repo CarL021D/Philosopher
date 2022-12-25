@@ -26,7 +26,9 @@ typedef struct s_data
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					philo_has_died;
+	int					max_meal_option;
 	int					max_nb_of_meals;
+	int					every_philo_full;
 	long				launch_time;
 }   t_data;
 
@@ -45,12 +47,15 @@ typedef struct s_philo
 }   t_philo;
 
 //				INIT
-int    init_data(t_data *data, t_philo **philo, int ac, char **av);
+int    init_data(t_philo **philo, t_data *data, int ac, char **av);
 
 //				PHILO
+long    get_current_time(void);
 void    philo_is_eating(t_philo *philo);
 void    philo_is_sleeping(t_philo *node);
 void	philo_is_thinking(t_philo *node);
+void	mutex_print(t_philo *philo, char *message);
+
 
 
 
