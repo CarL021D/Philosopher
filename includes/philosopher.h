@@ -34,23 +34,24 @@ typedef struct s_philo
 	pthread_mutex_t	    left_fork;
 	pthread_mutex_t		last_meal_time_mutex;
 	int					index;
-	int				    philo_is_sleeping;
-	int				    philo_is_thinking;
-	int				    total_meals_eaten;
+	int					philo_is_sleeping;
+	int					philo_is_thinking;
+	int					philo_is_full;
+	int					total_meals_eaten;
 	long				last_meal_time;
 	struct s_data		*data;
 	struct s_philo		*next;
 }   t_philo;
 
 //				INIT
-int    init_data(t_philo **philo, t_data *data, int ac, char **av);
+int		init_data(t_philo **philo, t_data *data, int ac, char **av);
 
 //				PHILO
-long    get_current_time(void);
-void    philo_is_eating(t_philo *philo);
-void    philo_is_sleeping(t_philo *node);
+void	philo_is_eating(t_philo *philo);
+void	philo_is_sleeping(t_philo *node);
 void	philo_is_thinking(t_philo *node);
 void	mutex_print(t_philo *philo, char *message);
+int		philo_died(t_philo *philo);
 
 //				LINKED LIST
 t_philo	*create_node(void);
@@ -67,9 +68,10 @@ void	init_mutex(t_philo **philo_lst, t_data *data);
 void	destroy_mutex(t_philo **philo_lst, t_data *data);
 
 //				ERROR HANDLING
-int exit_if_args_errors(int ac, char **av);
+int		exit_if_args_errors(int ac, char **av);
 
 //				UTILS
-int	ft_atoi(const char *nptr);
+long	get_current_time(void);
+int		ft_atoi(const char *nptr);
 
 #endif

@@ -1,11 +1,11 @@
 #include "philosopher.h"
 
-long    get_current_time(void)
+long	get_current_time(void)
 {
-    struct timeval	tv;
-    long			time;
-
-    gettimeofday(&tv, NULL);
+	struct timeval	tv;
+	long			time;
+	
+	gettimeofday(&tv, NULL);
 	time = tv.tv_sec * 1000;
 	time += tv.tv_usec / 1000;
 	return (time);
@@ -43,16 +43,24 @@ int		philo_died(t_philo *philo)
 	return (FALSE);
 }
 
-void		kill_philo_if_possible(t_philo *philo)
+int		kill_philo_if_possible(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->philo_has_died_mutex);
+	pthread_mutex_lock(&philo->last_meal_time_mutex);
 	if (get_current_time() - philo->last_meal_time > philo->data->time_to_die)
 	{
+		pthread_mutex_unlock(&philo->last_meal_time_mutex);
+		pthread_mutex_lock(&philo->data->philo_has_died_mutex);
 		philo->data->philo_has_died = TRUE;
 		mutex_print(philo, "died\n");
+		pthread_mutex_unlock(&philo->data->philo_has_died_mutex);
+		return (TRUE);
 	}
-	pthread_mutex_unlock(&philo->data->philo_has_died_mutex);
+	pthread_mutex_unlock(&philo->last_meal_time_mutex);
+	return (FALSE);
 }
+
+
+
 
 int		max_nb_of_meals_reached(t_philo *philo)
 {
@@ -66,26 +74,30 @@ int		max_nb_of_meals_reached(t_philo *philo)
 	return (FALSE);
 }
 
-// Ok;
-void	stop_routine_if_all_philo_full(t_philo *philo, t_data *data)
+int		stop_routine_if_all_philo_full(t_philo *philo, t_data *data)
 {
 	int		i;
 
 	if (!philo->data->max_meal_option)
-		return ;
+		return (FALSE);
 	i = 0;
 	pthread_mutex_lock(&philo->data->max_nb_of_meals_mutex);
-	while (i < philo->data->nb_of_philos)
+	while (i < data->nb_of_philos)
 	{
 		if (philo->total_meals_eaten < philo->data->max_nb_of_meals)
-			break ;
+		{
+			pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
+			return (FALSE);
+		}
 		i++;
 		philo = philo->next;
 	}
-	if (i == data->nb_of_philos)
-		data->every_philo_full = TRUE;
 	pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
+	return (TRUE);
 }
+
+
+
 
 
 void	philo_routine(t_philo *philo)
@@ -97,6 +109,7 @@ void	philo_routine(t_philo *philo)
 	else
 		desync_action_for_odd_philo_count(philo);
 	option = philo->data->max_meal_option;
+
 	while (!philo_died(philo) || (option && !max_nb_of_meals_reached(philo)))
 	{
 		if (!philo_died(philo) || (option && !max_nb_of_meals_reached(philo)))
@@ -134,28 +147,32 @@ void	stop_routine_if_philo_dead_or_full(t_philo **philo_lst, t_data *data)
 
 	philo = *philo_lst;
 	option = philo->data->max_meal_option;
-	while (!philo_died(philo) || option && !max_nb_of_meals_reached(philo))
+	while (!philo_died(philo) || (option && !max_nb_of_meals_reached(philo)))
 	{
 		philo = *philo_lst;
 		i = 0;
 		while (i < data->nb_of_philos)
 		{
-			kill_philo_if_possible(philo);
-			pthread_mutex_lock(&data->philo_has_died_mutex);
-			if (data->philo_has_died == TRUE)
-			{
-				pthread_mutex_unlock(&data->philo_has_died_mutex);
+			if (kill_philo_if_possible(philo) == TRUE)
 				return ;
-			}
-			pthread_mutex_unlock(&data->philo_has_died_mutex);
-			stop_routine_if_all_philo_full(philo, data);
-			pthread_mutex_lock(&data->max_nb_of_meals_mutex);
-			if (data->every_philo_full == TRUE)
-			{
-				pthread_mutex_unlock(&data->philo_has_died_mutex);
+			if (stop_routine_if_all_philo_full(philo, data))
 				return ;
-			}
-			pthread_mutex_unlock(&data->max_nb_of_meals_mutex);
+			// kill_philo_if_possible(philo);
+			// pthread_mutex_lock(&data->philo_has_died_mutex);
+			// if (data->philo_has_died == TRUE)
+			// {
+			// 	pthread_mutex_unlock(&data->philo_has_died_mutex);
+			// 	return ;
+			// }
+			// pthread_mutex_unlock(&data->philo_has_died_mutex);
+			// stop_routine_if_all_philo_full(philo, data);
+			// pthread_mutex_lock(&data->max_nb_of_meals_mutex);
+			// if (data->every_philo_full == TRUE)
+			// {
+			// 	pthread_mutex_unlock(&data->philo_has_died_mutex);
+			// 	return ;
+			// }
+			// pthread_mutex_unlock(&data->max_nb_of_meals_mutex);
 			i++;
 			philo = philo->next;
 		}
@@ -164,8 +181,8 @@ void	stop_routine_if_philo_dead_or_full(t_philo **philo_lst, t_data *data)
 
 int main(int ac, char **av)
 {
-	t_philo     *philo;
-	t_data      data;
+	t_philo		*philo;
+	t_data		data;
 
 	if (exit_if_args_errors(ac, av) == ERROR)
 		return (1);

@@ -105,29 +105,6 @@ void	init_mutex(t_philo **philo_lst, t_data *data)
 	}
 }
 
-static void     init_philo_struct(t_philo **philo_lst, t_data *data)
-{
-	t_philo     *philo;
-	int         i;
-
-	philo = (*philo_lst);
-	i = 1;
-	while (i <= data->nb_of_philos)
-	{
-		philo->index = i;
-		philo->philo_is_sleeping = FALSE;
-		philo->philo_is_thinking = FALSE;
-		philo->last_meal_time = 0;
-		philo->total_meals_eaten = 0;
-		philo->data = data;
-		if (data->nb_of_philos > 1 && i == data->nb_of_philos)
-			philo->next = *philo_lst;
-		else
-			philo = philo->next;
-		i++;
-	}
-}
-
 static int  init_struct(t_data *data, int ac, char **av)
 {
 	data->nb_of_philos = ft_atoi(av[1]);
@@ -146,6 +123,31 @@ static int  init_struct(t_data *data, int ac, char **av)
 	// if (!data->philos)
 	// 	return (ERROR);
 	return (1);
+}
+
+static void     init_philo_struct(t_philo **philo_lst, t_data *data)
+{
+	t_philo     *philo;
+	int         i;
+
+	philo = (*philo_lst);
+	i = 1;
+	while (i <= data->nb_of_philos)
+	{
+		philo->index = i;
+		philo->philo_is_sleeping = FALSE;
+		philo->philo_is_thinking = FALSE;
+		philo->last_meal_time = 0;
+		philo->total_meals_eaten = 0;
+		philo->data = data;
+		if (data->max_meal_option == TRUE)
+			philo->philo_is_full = FALSE;
+		if (data->nb_of_philos > 1 && i == data->nb_of_philos)
+			philo->next = *philo_lst;
+		else
+			philo = philo->next;
+		i++;
+	}
 }
 
 int    init_data(t_philo **philo_lst, t_data *data, int ac, char **av)
