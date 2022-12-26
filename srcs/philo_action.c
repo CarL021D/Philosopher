@@ -10,22 +10,7 @@ void	mutex_print(t_philo *philo, char *message)
 	pthread_mutex_unlock(&philo->data->lock_print);
 }
 
-int		philo_is_full(t_philo *philo)
-{
-	int		option;
-
-	option = philo->data->max_meal_option;
-	if (!option)
-		return (FALSE);
-	if (philo->philo_is_full == FALSE)
-		return (FALSE);
-	return (TRUE);
-}
-
-
-
 // TODO: - Check condition for max meal reached for an individual philo 
-
 
 void    philo_is_eating(t_philo *philo)
 {
