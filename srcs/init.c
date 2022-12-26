@@ -11,7 +11,7 @@ t_philo	*create_node(void)
 	return (node);
 }
 
-static int  create_list(t_data *data, t_philo **philo_lst)
+int		create_linked_list(t_data *data, t_philo **philo_lst)
 {
 	t_philo		*philo;
 	int			i;
@@ -34,32 +34,78 @@ static int  create_list(t_data *data, t_philo **philo_lst)
 	return (1);
 }
 
-int	init_mutex(t_philo **philo_lst, t_data *data)
+void	free_circular_linked_list(t_philo **philo_lst, t_data *data)
 {
 	t_philo		*philo;
 	int			i;
 
-	if (!pthread_mutex_init(&data->philo_has_died_mutex))
-		return (ERROR);
-	if (!pthread_mutex_init(&data->max_nb_of_meals_mutex))
-		return (ERROR);
-	if (!pthread_mutex_init(&data->lock_print))
-		return (ERROR);
 	philo = *philo_lst;
 	i = 0;
 	while (i < data->nb_of_philos)
 	{
-		if (!pthread_mutex_init(&philo->left_fork))
+		*philo_lst = (*philo_lst)->next;
+		free(philo);
+		i++;
+		philo = *philo_lst;
+	}
+}
+
+int		destroy_threads(t_philo **philo_lst, t_data *data)
+{
+	t_philo		*philo;
+	int			i;
+
+	philo = *philo_lst;
+	i = 0;
+	while (i < data->nb_of_philos)
+	{
+		if (!pthread_join(philo->thread, NULL))
 			return (ERROR);
-		if (!pthread_mutex_init(&philo->last_meal_time_mutex))
-			return (ERROR);
+		i++;
+		philo = philo->next;
+	}
+	return (0);
+}
+
+void	destroy_mutex(t_philo **philo_lst, t_data *data)
+{
+	t_philo		*philo;
+	int			i;
+
+	pthread_mutex_destroy(&data->philo_has_died_mutex);
+	pthread_mutex_destroy(&data->max_nb_of_meals_mutex);
+	pthread_mutex_destroy(&data->lock_print);
+	philo = *philo_lst;
+	i = 0;
+	while (i < data->nb_of_philos)
+	{
+		pthread_mutex_destroy(&philo->left_fork);
+		pthread_mutex_destroy(&philo->last_meal_time_mutex);
 		philo = philo->next;
 		i++;
 	}
-		return (ERROR);
 }
 
-static void     init_philo_thread(t_philo **philo_lst, t_data *data)
+void	init_mutex(t_philo **philo_lst, t_data *data)
+{
+	t_philo		*philo;
+	int			i;
+
+	pthread_mutex_init(&data->philo_has_died_mutex, NULL);
+	pthread_mutex_init(&data->max_nb_of_meals_mutex, NULL);
+	pthread_mutex_init(&data->lock_print, NULL);
+	philo = *philo_lst;
+	i = 0;
+	while (i < data->nb_of_philos)
+	{
+		pthread_mutex_init(&philo->left_fork, NULL);
+		pthread_mutex_init(&philo->last_meal_time_mutex, NULL);
+		philo = philo->next;
+		i++;
+	}
+}
+
+static void     init_philo_struct(t_philo **philo_lst, t_data *data)
 {
 	t_philo     *philo;
 	int         i;
@@ -96,9 +142,9 @@ static int  init_struct(t_data *data, int ac, char **av)
 		data->max_meal_option = TRUE;
 		data->every_philo_full = FALSE;
 	}
-	data->philos = malloc(sizeof(pthread_t) * data->nb_of_philos);
-	if (!data->philos)
-		return (ERROR);
+	// data->philos = malloc(sizeof(pthread_t) * data->nb_of_philos);
+	// if (!data->philos)
+	// 	return (ERROR);
 	return (1);
 }
 
@@ -106,14 +152,14 @@ int    init_data(t_philo **philo_lst, t_data *data, int ac, char **av)
 {
 	if (init_struct(data, ac, av) == ERROR)
 		return (ERROR);
-	create_list(data, philo_lst);	
-	if (create_list(data, philo_lst) == ERROR)
+	create_linked_list(data, philo_lst);	
+	if (create_linked_list(data, philo_lst) == ERROR)
 	{
-		free(data->philos);
+		// free(data->philos);
 		free_list(philo_lst);
 		return (ERROR);
 	}
-	init_philo_thread(philo_lst, data);
-	// init_mutex(philo_lst, data);
+	init_philo_struct(philo_lst, data);
+	init_mutex(philo_lst, data);
 	return (1);
 }
