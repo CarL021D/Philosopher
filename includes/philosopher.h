@@ -36,7 +36,7 @@ typedef struct s_philo
 {
 	pthread_t			thread;
 	pthread_mutex_t	    left_fork;
-	pthread_mutex_t     philo_is_eating;
+	pthread_mutex_t		last_meal_time_mutex;
 	int					index;
 	int				    philo_is_sleeping;
 	int				    philo_is_thinking;

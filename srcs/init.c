@@ -34,12 +34,30 @@ static int  create_list(t_data *data, t_philo **philo_lst)
 	return (1);
 }
 
-// void	init_mutex(t_philo **philo_lst, t_data *data)
-// {
-// 	int		i;
+int	init_mutex(t_philo **philo_lst, t_data *data)
+{
+	t_philo		*philo;
+	int			i;
 
-// 	pthread_mutex_init(data->)
-// }
+	if (!pthread_mutex_init(&data->philo_has_died_mutex))
+		return (ERROR);
+	if (!pthread_mutex_init(&data->max_nb_of_meals_mutex))
+		return (ERROR);
+	if (!pthread_mutex_init(&data->lock_print))
+		return (ERROR);
+	philo = *philo_lst;
+	i = 0;
+	while (i < data->nb_of_philos)
+	{
+		if (!pthread_mutex_init(&philo->left_fork))
+			return (ERROR);
+		if (!pthread_mutex_init(&philo->last_meal_time_mutex))
+			return (ERROR);
+		philo = philo->next;
+		i++;
+	}
+		return (ERROR);
+}
 
 static void     init_philo_thread(t_philo **philo_lst, t_data *data)
 {
