@@ -3,19 +3,20 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: caboudar <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 15:12:48 by caboudar          #+#    #+#              #
-#    Updated: 2022/11/13 23:43:41 by caboudar         ###   ########.fr        #
+#    Updated: 2022/12/26 18:30:14 by caboudar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philosopher
 
 SRCS	= 		srcs/philosopher.c 				\
-				srcs/philo_action.c 			\
-				srcs/check_errors.c				\
 				srcs/init.c						\
+				srcs/check_errors.c				\
+				srcs/thread_routine.c			\
+				srcs/philo_action.c 			\
 				srcs/utils.c					\
 				srcs/free.c						\
 

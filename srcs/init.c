@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/26 18:19:20 by caboudar          #+#    #+#             */
+/*   Updated: 2022/12/26 18:19:24 by caboudar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosopher.h"
 
 t_philo	*create_node(void)
@@ -119,9 +131,6 @@ static int  init_struct(t_data *data, int ac, char **av)
 		data->max_meal_option = TRUE;
 		data->every_philo_full = FALSE;
 	}
-	// data->philos = malloc(sizeof(pthread_t) * data->nb_of_philos);
-	// if (!data->philos)
-	// 	return (ERROR);
 	return (1);
 }
 
@@ -157,7 +166,6 @@ int    init_data(t_philo **philo_lst, t_data *data, int ac, char **av)
 	create_linked_list(data, philo_lst);	
 	if (create_linked_list(data, philo_lst) == ERROR)
 	{
-		// free(data->philos);
 		free_list(philo_lst);
 		return (ERROR);
 	}

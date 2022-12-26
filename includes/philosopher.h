@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosopher.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/26 18:20:28 by caboudar          #+#    #+#             */
+/*   Updated: 2022/12/26 18:43:21 by caboudar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 
@@ -47,11 +59,15 @@ typedef struct s_philo
 int		init_data(t_philo **philo, t_data *data, int ac, char **av);
 
 //				PHILO
+void	desync_action_for_even_philo_count(t_philo *philo);
+void	desync_action_for_odd_philo_count(t_philo *philo);
 void	philo_is_eating(t_philo *philo);
 void	philo_is_sleeping(t_philo *node);
 void	philo_is_thinking(t_philo *node);
 void	mutex_print(t_philo *philo, char *message);
+int		max_nb_of_meals_reached(t_philo *philo);
 int		philo_died(t_philo *philo);
+int		kill_philo_if_possible(t_philo *philo);
 
 //				LINKED LIST
 t_philo	*create_node(void);
@@ -61,6 +77,10 @@ void	free_circular_linked_list(t_philo **philo_lst, t_data *data);
 
 
 //				THREAD
+void	philo_routine(t_philo *philo);
+void	launch_philo_routine(t_philo **philo_lst, t_data *data);
+void	stop_routine_if_philo_dead_or_full(t_philo **philo_lst, t_data *data);
+int		stop_routine_if_all_philo_full(t_philo *philo, t_data *data);
 int		destroy_threads(t_philo **philo_lst, t_data *data);
 
 //				MUTEX
