@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:19:30 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/26 18:19:33 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/26 19:11:08 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	mutex_print(t_philo *philo, char *message)
 	printf("%ld - %d %s\n", current_time, philo->index, message);
 	pthread_mutex_unlock(&philo->data->lock_print);
 }
-
-// TODO: - Check condition for max meal reached for an individual philo 
 
 void    philo_is_eating(t_philo *philo)
 {
@@ -79,7 +77,5 @@ void	philo_is_thinking(t_philo *philo)
 		mutex_print(philo, "is thinking\n");
 	pthread_mutex_unlock(&philo->data->philo_has_died_mutex);
 }
-
-
 
 // printf("\n\nERROR\n\n\n");
