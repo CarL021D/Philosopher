@@ -33,15 +33,14 @@ void	desync_action_for_odd_philo_count(t_philo *philo)
 
 int		philo_died(t_philo *philo)
 {
-	int		exec_end;
-
 	pthread_mutex_lock(&philo->data->philo_has_died_mutex);
 	if (philo->data->philo_has_died == TRUE)
-		exec_end = TRUE;
-	else
-		exec_end = FALSE;
+	{
+		pthread_mutex_unlock(&philo->data->philo_has_died_mutex);
+		return (TRUE);
+	}
 	pthread_mutex_unlock(&philo->data->philo_has_died_mutex);
-	return (exec_end);
+	return (FALSE);
 }
 
 void		kill_philo_if_possible(t_philo *philo)
@@ -57,15 +56,14 @@ void		kill_philo_if_possible(t_philo *philo)
 
 int		max_nb_of_meals_reached(t_philo *philo)
 {
-	int		exec_end;
-
 	pthread_mutex_lock(&philo->data->max_nb_of_meals_mutex);
 	if (philo->data->every_philo_full == TRUE)
-		exec_end = TRUE;
-	else
-		exec_end = FALSE;
+	{
+		pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
+		return (TRUE);
+	}
 	pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
-	return (exec_end);
+	return (FALSE);
 }
 
 // Ok;
@@ -136,7 +134,7 @@ void	stop_routine_if_philo_dead_or_full(t_philo **philo_lst, t_data *data)
 
 	philo = *philo_lst;
 	option = philo->data->max_meal_option;
-	while (!philo_died(philo) || (option && !max_nb_of_meals_reached(philo)))
+	while (!philo_died(philo) || option && !max_nb_of_meals_reached(philo))
 	{
 		philo = *philo_lst;
 		i = 0;
