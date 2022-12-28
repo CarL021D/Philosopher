@@ -65,7 +65,7 @@ void	philo_is_eating(t_philo *philo);
 void	philo_is_sleeping(t_philo *node);
 void	philo_is_thinking(t_philo *node);
 void	mutex_print(t_philo *philo, char *message);
-int		max_nb_of_meals_reached(t_philo *philo);
+int		all_philo_full(t_philo *philo);
 int		philo_died(t_philo *philo);
 int		kill_philo_if_possible(t_philo *philo);
 

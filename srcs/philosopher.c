@@ -25,25 +25,32 @@ void	launch_philo_routine(t_philo **philo_lst, t_data *data)
 		philo = philo->next;
 		i++;
 	}
+	// Usleep to avoid creating a mutex for the data->nb_of_philos variable 
+	usleep(40);
+}
+
+int		option(t_philo *philo)
+{
+
 }
 
 void	philo_routine(t_philo *philo)
 {
 	int		option;
  
+	// todo: - func exec routine for one philo
 	if (philo->data->nb_of_philos % 2 == 0)
 		desync_action_for_even_philo_count(philo);
 	else
 		desync_action_for_odd_philo_count(philo);
 	option = philo->data->max_meal_option;
-
-	while (!philo_died(philo) || (option && !max_nb_of_meals_reached(philo)))
+	while (!philo_died(philo) || (option(philo) && !all_philo_full(philo)))
 	{
-		if (!philo_died(philo) || (option && !max_nb_of_meals_reached(philo)))
+		if (!philo_died(philo) || (option(philo) && !all_philo_full(philo)))
 			philo_is_eating(philo);
-		if (!philo_died(philo) || (option && !max_nb_of_meals_reached(philo)))
+		if (!philo_died(philo) || (option && !all_philo_full(philo)))
 			philo_is_sleeping(philo);
-		if (!philo_died(philo) || (option && !max_nb_of_meals_reached(philo)))
+		if (!philo_died(philo) || (option && !all_philo_full(philo)))
 			philo_is_thinking(philo);
 		usleep(100);
 	}
@@ -57,13 +64,13 @@ void	stop_routine_if_philo_dead_or_full(t_philo **philo_lst, t_data *data)
 
 	philo = *philo_lst;
 	option = philo->data->max_meal_option;
-	while (!philo_died(philo) || (option && !max_nb_of_meals_reached(philo)))
+	while (!philo_died(philo) || (option && !all_philo_full(philo)))
 	{
 		philo = *philo_lst;
 		i = 0;
 		while (i < data->nb_of_philos)
 		{
-			if (kill_philo_if_possible(philo) == TRUE)
+			if (kill_philo_if_possible(philo))
 				return ;
 			if (stop_routine_if_all_philo_full(philo, data))
 				return ;

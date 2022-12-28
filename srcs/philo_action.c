@@ -38,8 +38,8 @@ void    philo_is_eating(t_philo *philo)
 		mutex_print(philo, "has taken a fork\n");
 		mutex_print(philo, "is eating\n");
 		usleep(time * 1000);
-		pthread_mutex_unlock(&philo->left_fork);
 		pthread_mutex_unlock(&philo->next->left_fork);
+		pthread_mutex_unlock(&philo->left_fork);
 	}
 	pthread_mutex_unlock(&philo->data->philo_has_died_mutex);
 	philo->last_meal_time = get_current_time();

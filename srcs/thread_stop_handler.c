@@ -24,6 +24,22 @@ int		philo_died(t_philo *philo)
 	return (FALSE);
 }
 
+int		all_philo_full(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->max_nb_of_meals_mutex);
+	if (philo->data->every_philo_full == TRUE)
+	{
+		pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
+		return (TRUE);
+	}
+	pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
+	return (FALSE);
+}
+
+
+
+
+
 int		kill_philo_if_possible(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->last_meal_time_mutex);
@@ -40,36 +56,26 @@ int		kill_philo_if_possible(t_philo *philo)
 	return (FALSE);
 }
 
-int		max_nb_of_meals_reached(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->max_nb_of_meals_mutex);
-	if (philo->data->every_philo_full == TRUE)
-	{
-		pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
-		return (TRUE);
-	}
-	pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
-	return (FALSE);
-}
 
 int		stop_routine_if_all_philo_full(t_philo *philo, t_data *data)
 {
 	int		i;
 
-	if (!philo->data->max_meal_option)
-		return (FALSE);
 	i = 0;
-	pthread_mutex_lock(&philo->data->max_nb_of_meals_mutex);
+	// pthread_mutex_lock(&philo->data->max_nb_of_meals_mutex);
 	while (i < data->nb_of_philos)
 	{
 		if (philo->total_meals_eaten < philo->data->max_nb_of_meals)
 		{
-			pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
+			// pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
 			return (FALSE);
 		}
 		i++;
 		philo = philo->next;
 	}
+	// pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
+	pthread_mutex_lock(&philo->data->max_nb_of_meals_mutex);
+	data->every_philo_full == TRUE;
 	pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
 	return (TRUE);
 }
