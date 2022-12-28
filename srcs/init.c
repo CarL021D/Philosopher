@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:19:20 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/26 18:19:24 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/28 12:45:54 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	destroy_mutex(t_philo **philo_lst, t_data *data)
 
 	pthread_mutex_destroy(&data->philo_has_died_mutex);
 	pthread_mutex_destroy(&data->max_nb_of_meals_mutex);
+	pthread_mutex_destroy(&data->max_meal_option_mutex);
 	pthread_mutex_destroy(&data->lock_print);
 	philo = *philo_lst;
 	i = 0;
@@ -105,6 +106,7 @@ void	init_mutex(t_philo **philo_lst, t_data *data)
 
 	pthread_mutex_init(&data->philo_has_died_mutex, NULL);
 	pthread_mutex_init(&data->max_nb_of_meals_mutex, NULL);
+	pthread_mutex_init(&data->max_meal_option_mutex, NULL);
 	pthread_mutex_init(&data->lock_print, NULL);
 	philo = *philo_lst;
 	i = 0;

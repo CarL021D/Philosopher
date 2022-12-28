@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:20:28 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/26 18:43:21 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/28 13:05:07 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_data
 {
 	pthread_mutex_t		philo_has_died_mutex;
 	pthread_mutex_t		max_nb_of_meals_mutex;
+	pthread_mutex_t		max_meal_option_mutex;
 	pthread_mutex_t		lock_print;
 	int					nb_of_philos;
 	int					time_to_die;
