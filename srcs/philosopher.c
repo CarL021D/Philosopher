@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:19:40 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/26 19:16:07 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/28 13:03:35 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,26 @@ void	launch_philo_routine(t_philo **philo_lst, t_data *data)
 	usleep(40);
 }
 
-void	philo_routine(t_philo *philo)
+int		option(t_philo *philo)
 {
-	int		option;
- 
+
+}
+
+void	philo_routine(t_philo *philo)
+{ 
 	// todo: - func exec routine for one philo
 	if (philo->data->nb_of_philos % 2 == 0)
 		desync_action_for_even_philo_count(philo);
 	else
 		desync_action_for_odd_philo_count(philo);
 	option = philo->data->max_meal_option;
-	while (!philo_died(philo) || !all_philo_full(philo))
+	while (!philo_died(philo) || (option(philo) && !all_philo_full(philo)))
 	{
-		if (!philo_died(philo) || !all_philo_full(philo))
+		if (!philo_died(philo) || (option(philo) && !all_philo_full(philo)))
 			philo_is_eating(philo);
-		if (!philo_died(philo) || !all_philo_full(philo))
+		if (!philo_died(philo) || (option && !all_philo_full(philo)))
 			philo_is_sleeping(philo);
-		if (!philo_died(philo) || !all_philo_full(philo))
+		if (!philo_died(philo) || (option && !all_philo_full(philo)))
 			philo_is_thinking(philo);
 		usleep(100);
 	}
@@ -54,12 +57,10 @@ void	philo_routine(t_philo *philo)
 void	stop_routine_if_philo_dead_or_full(t_philo **philo_lst, t_data *data)
 {
 	t_philo		*philo;
-	int			option;
 	int			i;
 
 	philo = *philo_lst;
-	option = philo->data->max_meal_option;
-	while (!philo_died(philo) || (option && !all_philo_full(philo)))
+	while (!philo_died(philo) || !all_philo_full(philo))
 	{
 		philo = *philo_lst;
 		i = 0;
