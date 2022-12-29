@@ -75,7 +75,7 @@ int		stop_routine_if_all_philo_full(t_philo *philo, t_data *data)
 	}
 	// pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
 	pthread_mutex_lock(&philo->data->max_nb_of_meals_mutex);
-	data->every_philo_full == TRUE;
+	data->every_philo_full = TRUE;
 	pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
 	return (TRUE);
 }
