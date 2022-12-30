@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:20:28 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/30 15:58:55 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/30 17:27:58 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <stdbool.h>
 
-# define FALSE 0
-# define TRUE 1 
 # define ERROR 2
 
 typedef struct s_data
 {
 	pthread_mutex_t		philo_has_died_mutex;
-	pthread_mutex_t		max_nb_of_meals_mutex;
+	pthread_mutex_t		every_philo_full_mutex;
 	pthread_mutex_t		max_meal_option_mutex;
 	pthread_mutex_t		lock_print;
 	int					nb_of_philos;

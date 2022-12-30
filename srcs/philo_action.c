@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:19:30 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/28 13:31:51 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/30 17:26:00 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ void    philo_is_eating(t_philo *philo)
 	pthread_mutex_lock(&philo->data->philo_has_died_mutex);
 	if (!philo->data->philo_has_died)
 	{
-		pthread_mutex_lock(&philo->data->max_nb_of_meals_mutex);
-		if (philo->philo_is_full == TRUE)
+		pthread_mutex_lock(&philo->data->every_philo_full_mutex);
+		if (philo->philo_is_full == true)
 		{
-			pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
+			pthread_mutex_unlock(&philo->data->every_philo_full_mutex);
 			return ;		
 		}
-		pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
+		pthread_mutex_unlock(&philo->data->every_philo_full_mutex);
 		pthread_mutex_lock(&philo->left_fork);
 		pthread_mutex_lock(&philo->next->left_fork);
 		mutex_print(philo, "has taken a fork\n");
@@ -47,14 +47,14 @@ void    philo_is_eating(t_philo *philo)
 		pthread_mutex_unlock(&philo->next->left_fork);
 		pthread_mutex_unlock(&philo->left_fork);
 	}
-	pthread_mutex_lock(&philo->data->max_nb_of_meals_mutex);
-	if (philo->data->max_meal_option == TRUE)
+	pthread_mutex_lock(&philo->data->every_philo_full_mutex);
+	if (philo->data->max_meal_option == true)
 	{
 		philo->total_meals_eaten++;
 		if (philo->total_meals_eaten == philo->data->max_nb_of_meals)
-			philo->philo_is_full = TRUE;
+			philo->philo_is_full = true;
 	}
-	pthread_mutex_unlock(&philo->data->max_nb_of_meals_mutex);
+	pthread_mutex_unlock(&philo->data->every_philo_full_mutex);
 	pthread_mutex_unlock(&philo->data->philo_has_died_mutex);
 }
 

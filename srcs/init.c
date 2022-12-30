@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:19:20 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/28 12:45:54 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/30 17:26:13 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	destroy_mutex(t_philo **philo_lst, t_data *data)
 	int			i;
 
 	pthread_mutex_destroy(&data->philo_has_died_mutex);
-	pthread_mutex_destroy(&data->max_nb_of_meals_mutex);
+	pthread_mutex_destroy(&data->every_philo_full_mutex);
 	pthread_mutex_destroy(&data->max_meal_option_mutex);
 	pthread_mutex_destroy(&data->lock_print);
 	philo = *philo_lst;
@@ -105,7 +105,7 @@ void	init_mutex(t_philo **philo_lst, t_data *data)
 	int			i;
 
 	pthread_mutex_init(&data->philo_has_died_mutex, NULL);
-	pthread_mutex_init(&data->max_nb_of_meals_mutex, NULL);
+	pthread_mutex_init(&data->every_philo_full_mutex, NULL);
 	pthread_mutex_init(&data->max_meal_option_mutex, NULL);
 	pthread_mutex_init(&data->lock_print, NULL);
 	philo = *philo_lst;
@@ -125,13 +125,13 @@ static int  init_struct(t_data *data, int ac, char **av)
 	data->time_to_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
-	data->philo_has_died = FALSE;
-	data->max_meal_option = FALSE;
+	data->philo_has_died = false;
+	data->max_meal_option = false;
 	if (ac == 6)
 	{
 		data->max_nb_of_meals = ft_atoi(av[5]);
-		data->max_meal_option = TRUE;
-		data->every_philo_full = FALSE;
+		data->max_meal_option = true;
+		data->every_philo_full = false;
 	}
 	return (1);
 }
@@ -146,13 +146,13 @@ static void     init_philo_struct(t_philo **philo_lst, t_data *data)
 	while (i <= data->nb_of_philos)
 	{
 		philo->index = i;
-		philo->philo_is_sleeping = FALSE;
-		philo->philo_is_thinking = FALSE;
+		philo->philo_is_sleeping = false;
+		philo->philo_is_thinking = false;
 		philo->last_meal_time = 0;
 		philo->total_meals_eaten = 0;
 		philo->data = data;
-		if (data->max_meal_option == TRUE)
-			philo->philo_is_full = FALSE;
+		if (data->max_meal_option == true)
+			philo->philo_is_full = false;
 		if (data->nb_of_philos > 1 && i == data->nb_of_philos)
 			philo->next = *philo_lst;
 		else
