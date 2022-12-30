@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:19:40 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/28 13:03:35 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/30 15:48:51 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ void	launch_philo_routine(t_philo **philo_lst, t_data *data)
 	usleep(40);
 }
 
-int		option(t_philo *philo)
-{
-
-}
-
 void	philo_routine(t_philo *philo)
 { 
 	// todo: - func exec routine for one philo
@@ -41,14 +36,13 @@ void	philo_routine(t_philo *philo)
 		desync_action_for_even_philo_count(philo);
 	else
 		desync_action_for_odd_philo_count(philo);
-	option = philo->data->max_meal_option;
-	while (!philo_died(philo) || (option(philo) && !all_philo_full(philo)))
+	while (!philo_died(philo) ||  !all_philo_full(philo))
 	{
-		if (!philo_died(philo) || (option(philo) && !all_philo_full(philo)))
+		if (!philo_died(philo) ||  !all_philo_full(philo))
 			philo_is_eating(philo);
-		if (!philo_died(philo) || (option && !all_philo_full(philo)))
+		if (!philo_died(philo) || !all_philo_full(philo))
 			philo_is_sleeping(philo);
-		if (!philo_died(philo) || (option && !all_philo_full(philo)))
+		if (!philo_died(philo) || !all_philo_full(philo))
 			philo_is_thinking(philo);
 		usleep(100);
 	}
