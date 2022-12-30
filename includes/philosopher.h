@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:20:28 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/28 13:05:07 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/30 15:58:55 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	free_circular_linked_list(t_philo **philo_lst, t_data *data);
 void	philo_routine(t_philo *philo);
 void	launch_philo_routine(t_philo **philo_lst, t_data *data);
 void	stop_routine_if_philo_dead_or_full(t_philo **philo_lst, t_data *data);
-int		stop_routine_if_all_philo_full(t_philo *philo, t_data *data);
+int		try_to_set_all_philo_to_full(t_philo *philo, t_data *data);
 int		destroy_threads(t_philo **philo_lst, t_data *data);
 
 //				MUTEX

@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:23:04 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/28 13:02:02 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/30 15:59:21 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		kill_philo_if_possible(t_philo *philo)
 }
 
 
-int		stop_routine_if_all_philo_full(t_philo *philo, t_data *data)
+int		try_to_set_all_philo_to_full(t_philo *philo, t_data *data)
 {
 	int		i;
 

@@ -6,7 +6,7 @@
 /*   By: caboudar <caboudar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 18:19:40 by caboudar          #+#    #+#             */
-/*   Updated: 2022/12/30 15:48:51 by caboudar         ###   ########.fr       */
+/*   Updated: 2022/12/30 15:59:12 by caboudar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	stop_routine_if_philo_dead_or_full(t_philo **philo_lst, t_data *data)
 		while (i < data->nb_of_philos)
 		{
 			if (kill_philo_if_possible(philo)
-				|| stop_routine_if_all_philo_full(philo, data))
+				|| try_to_set_all_philo_to_full(philo, data))
 					return ;
 			i++;
 			philo = philo->next;
